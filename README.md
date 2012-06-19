@@ -1,4 +1,4 @@
-event-stack
+Event Stack
 ===========
 
-An useful Event Stack jQuery Plugin
+An useful Event Stack jQuery Plugin.
