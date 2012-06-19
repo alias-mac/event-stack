@@ -1,5 +1,12 @@
 /**
+ * Events Stack plugin for jQuery
+ * http://jquery.com/
  *
+ * Copyright (c) 2012 Filipe Guerra, João Morais
+ * https://github.com/alias-mac/event-stack/blob/master/LICENSE
+ *
+ * @license MIT
+ *   See LICENSE shipped with this file.
  */
 (function($){
 
