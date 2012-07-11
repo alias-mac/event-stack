@@ -73,7 +73,7 @@
       _resume(event, $this);
     },
 
-    fireAll: function() {
+    fireAll: function() {
       var $this = $(this);
       var $self = $this.data('eventStack').target;
       var options = $self.data('eventStack').options;
