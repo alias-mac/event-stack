@@ -6,12 +6,13 @@ $(function() {
   });
 
   $('#EditForm').eventStack('add', {
-    trigger: function(){
+    trigger: function(event, stack){
       console.log('A done');
+//      stack.eventStack('stop');
     }
   });
   $('#EditForm').eventStack('add', {
-    trigger: function(event, eventStack){
+    trigger: function(event, stack){
       $.ajax({
         type: 'POST',
         url: 'index.php',
@@ -20,7 +21,7 @@ $(function() {
           action: 'xpto'
         },
         complete: function() {
-          eventStack.eventStack('resume', event);
+          stack.eventStack('resume', event);
         },
         success: function() {
           console.log('B done - async');

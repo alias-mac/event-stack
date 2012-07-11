@@ -57,7 +57,15 @@
     },
 
     stop: function() {
-      // TODO check what we need to keep this sane!
+      var $this = $(this);
+      var $self = $this.data('eventStack').target;
+      var options = $self.data('eventStack').options;
+
+      if (options.async) {
+        throw 'EventStack: Unable to stop when running an async stack.';
+      }
+
+      $this.data('eventStack').runningEvents = new Array();
     },
 
     resume: function(event) {
@@ -128,6 +136,7 @@
     var options = $self.data('eventStack').options;
 
     if (options.async) {
+      // all fired already
       return;
     }
 
