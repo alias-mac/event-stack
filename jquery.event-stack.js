@@ -31,7 +31,8 @@
           $this.data('eventStack', {
             target: $this,
             options: _overrideOptions(options),
-            events: new Array()
+            events: new Array(),
+            status: 'stopped'
           });
         }
       });
