@@ -86,6 +86,9 @@
       var $self = $this.data('eventStack').target;
       var options = $self.data('eventStack').options;
 
+      if ($self.data('eventStack').status !== 'paused') {
+        throw 'EventStack: Unable to resume an event stack that is not running.';
+      }
       if (options.async) {
         throw 'EventStack: Unable to resume when running an async stack.';
       }
@@ -105,6 +108,9 @@
       var options = $self.data('eventStack').options;
       var events = $this.data('eventStack').events;
 
+      if ($this.data('eventStack').status !== 'stopped') {
+        throw 'EventStack: Unable to start an event stack that is not stopped';
+      }
       $this.data('eventStack').status = 'running';
       $this.data('eventStack').runningEvents = $.extend(true, [], events);
 
@@ -200,6 +206,7 @@
     _fireNext($self);
 
     if (runningEvents.length == 0) {
+      $self.data('eventStack').status = 'stopped';
       $self.triggerHandler('afterTriggerAll.eventStack');
       return;
     }
