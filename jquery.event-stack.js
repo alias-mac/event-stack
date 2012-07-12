@@ -66,11 +66,37 @@
       }
 
       $this.data('eventStack').runningEvents = new Array();
+      $self.data('eventStack').status = 'stopped';
     },
 
-    resume: function(event) {
+    pause: function() {
       var $this = $(this);
-      _resume(event, $this);
+      var $self = $this.data('eventStack').target;
+      var options = $self.data('eventStack').options;
+
+      if (options.async) {
+        throw 'EventStack: Unable to pause when running an async stack.';
+      }
+      
+      $self.data('eventStack').status = 'paused';
+    },
+
+    resume: function() {
+      var $this = $(this);
+      var $self = $this.data('eventStack').target;
+      var options = $self.data('eventStack').options;
+
+      if (options.async) {
+        throw 'EventStack: Unable to resume when running an async stack.';
+      }
+
+      $self.data('eventStack').status = 'running';
+      _continue($self);
+    },
+
+    complete: function(event) {
+      var $this = $(this);
+      _complete(event, $this);
     },
 
     fireAll: function() {
@@ -79,6 +105,7 @@
       var options = $self.data('eventStack').options;
       var events = $this.data('eventStack').events;
 
+      $this.data('eventStack').status = 'running';
       $this.data('eventStack').runningEvents = $.extend(true, [], events);
 
       $self.triggerHandler('beforeTriggerAll.eventStack');
@@ -88,7 +115,7 @@
           event.status = 'running';
           _fire(event, $this);
           if (!event.isAjax) {
-            _resume(event, $this);
+            _complete(event, $this);
           }
         });
       }
@@ -149,16 +176,26 @@
     event.status = 'running';
     _fire(event, $self);
     if (!event.isAjax) {
-      _resume(event, $self);
+      _complete(event, $self);
     }
   }
 
-  function _resume(event, $self) {
+  function _complete(event, $self) {
     var runningEvents = $self.data('eventStack').runningEvents;
 
     event.status = 'ready';
     var pos = $.inArray(event, runningEvents);
     runningEvents.splice(pos, 1);
+
+    if ($self.data('eventStack').status !== 'running') {
+      return;
+    }
+
+    _continue($self);
+  }
+
+  function _continue($self) {
+    var runningEvents = $self.data('eventStack').runningEvents;
 
     _fireNext($self);
 

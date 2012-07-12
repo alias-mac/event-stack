@@ -2,7 +2,7 @@
 $(function() {
 
   $('#EditForm').eventStack({
-//    async: false
+    async: false
   });
 
   $('#EditForm').eventStack('add', {
@@ -21,10 +21,11 @@ $(function() {
           action: 'xpto'
         },
         complete: function() {
-          stack.eventStack('resume', event);
+          stack.eventStack('complete', event);
         },
         success: function() {
           console.log('B done - async');
+//          stack.eventStack('pause', event);
         },
         error: function() {
           event.setStatus('error');
@@ -48,7 +49,7 @@ $(function() {
           action: 'xpto'
         },
         complete: function() {
-          eventStack.eventStack('resume', event);
+          eventStack.eventStack('complete', event);
         },
         success: function() {
           console.log('D done - async');
