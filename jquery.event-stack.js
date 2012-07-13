@@ -78,7 +78,10 @@
       if (options.async) {
         throw 'EventStack: Unable to pause when running an async stack.';
       }
-      
+      if ($self.data('eventStack').status !== 'running') {
+        throw 'EventStack: Unable to pause an event stack that is not running.';
+      }
+
       $self.data('eventStack').status = 'paused';
     },
 
@@ -88,7 +91,7 @@
       var options = $self.data('eventStack').options;
 
       if ($self.data('eventStack').status !== 'paused') {
-        throw 'EventStack: Unable to resume an event stack that is not running.';
+        throw 'EventStack: Unable to resume an event stack that is not paused.';
       }
       if (options.async) {
         throw 'EventStack: Unable to resume when running an async stack.';

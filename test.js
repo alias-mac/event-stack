@@ -62,7 +62,7 @@ $(function() {
   $('#EditForm').bind('afterTriggerAll.eventStack', function() {
     console.info('all done!');
 
-    $('#EditForm').eventStack('destroy');
+//    $('#EditForm').eventStack('destroy');
   });
 
   $('#EditForm').eventStack('fireAll');
