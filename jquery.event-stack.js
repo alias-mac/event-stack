@@ -197,15 +197,15 @@
     var pos = $.inArray(event, runningEvents);
     runningEvents.splice(pos, 1);
 
-    if ($self.data('eventStack').status !== 'running') {
-      return;
-    }
-
     _continue($self);
   }
 
   function _continue($self) {
     var runningEvents = $self.data('eventStack').runningEvents;
+
+    if ($self.data('eventStack').status !== 'running') {
+      return;
+    }
 
     _fireNext($self);
 
