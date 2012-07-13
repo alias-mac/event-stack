@@ -25,7 +25,7 @@ $(function() {
         },
         success: function() {
           console.log('B done - async');
-//          stack.eventStack('pause', event);
+//          stack.eventStack('pause');
         },
         error: function() {
           event.setStatus('error');
@@ -49,7 +49,12 @@ $(function() {
           action: 'xpto'
         },
         complete: function() {
+          console.log($('#EditForm').data('eventStack').status);
+          $('#EditForm').eventStack('pause');
+          console.log($('#EditForm').data('eventStack').status);
+          $('#EditForm').eventStack('resume');
           eventStack.eventStack('complete', event);
+          console.log($('#EditForm').data('eventStack').status);
         },
         success: function() {
           console.log('D done - async');

@@ -113,7 +113,7 @@
       var events = $this.data('eventStack').events;
 
       if ($this.data('eventStack').status !== 'stopped') {
-        throw 'EventStack: Unable to start an event stack that is not stopped';
+        throw 'EventStack: Unable to start an event stack that is not stopped.';
       }
       $this.data('eventStack').status = 'running';
       $this.data('eventStack').runningEvents = $.extend(true, [], events);
@@ -183,6 +183,9 @@
     }
 
     var event = runningEvents[0];
+    if (event.status === 'running') {
+      return;
+    }
     event.status = 'running';
     _fire(event, $self);
     if (!event.isAjax) {
@@ -193,6 +196,9 @@
   function _complete(event, $self) {
     var runningEvents = $self.data('eventStack').runningEvents;
 
+    if (event.status !== 'running') {
+      throw 'EventStack: Unable to complete an event that is not running.';
+    }
     event.status = 'ready';
     var pos = $.inArray(event, runningEvents);
     runningEvents.splice(pos, 1);
