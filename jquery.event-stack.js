@@ -122,11 +122,7 @@
 
       if (options.async) {
         $.each(events, function(i, event) {
-          event.status = 'running';
           _fire(event, $this);
-          if (!event.isAjax) {
-            _complete(event, $this);
-          }
         });
       }
       else {
@@ -161,21 +157,19 @@
   function _fire(event, $this) {
     var $self = $this.data('eventStack').target;
 
+    event.status = 'running';
     var proceed = $self.triggerHandler('beforeTrigger.eventStack', event);
     if (proceed === false) {
       return;
     }
     (event.trigger)(event, $this);
     $self.triggerHandler('afterTrigger.eventStack', event);
+    if (!event.isAjax) {
+      _complete(event, $this);
+    }
   }
 
   function _fireNext($self) {
-    var options = $self.data('eventStack').options;
-
-    if (options.async) {
-      // all fired already
-      return;
-    }
 
     var runningEvents = $self.data('eventStack').runningEvents;
     if (runningEvents.length == 0) {
@@ -186,11 +180,7 @@
     if (event.status === 'running') {
       return;
     }
-    event.status = 'running';
     _fire(event, $self);
-    if (!event.isAjax) {
-      _complete(event, $self);
-    }
   }
 
   function _complete(event, $self) {
@@ -203,23 +193,30 @@
     var pos = $.inArray(event, runningEvents);
     runningEvents.splice(pos, 1);
 
-    _continue($self);
-  }
-
-  function _continue($self) {
-    var runningEvents = $self.data('eventStack').runningEvents;
-
-    if ($self.data('eventStack').status !== 'running') {
-      return;
-    }
-
-    _fireNext($self);
-
     if (runningEvents.length == 0) {
       $self.data('eventStack').status = 'stopped';
       $self.triggerHandler('afterTriggerAll.eventStack');
       return;
     }
+
+    _continue($self);
+  }
+
+  function _continue($self) {
+    var options = $self.data('eventStack').options;
+
+    if ($self.data('eventStack').status !== 'running') {
+      return;
+    }
+
+    if (options.async) {
+      // all fired already
+      return;
+    }
+
+    _fireNext($self);
+
+    
   }
 
 })(jQuery);

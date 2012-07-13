@@ -8,7 +8,16 @@ $(function() {
   $('#EditForm').eventStack('add', {
     trigger: function(event, stack){
       console.log('A done');
-//      stack.eventStack('stop');
+    }
+  });
+  $('#EditForm').eventStack('add', {
+    trigger: function(event, stack){
+      console.log('A1 done');
+    }
+  });
+  $('#EditForm').eventStack('add', {
+    trigger: function(event, stack){
+      console.log('A2 done');
     }
   });
   $('#EditForm').eventStack('add', {
@@ -37,6 +46,10 @@ $(function() {
   $('#EditForm').eventStack('add', {
     trigger: function(){
       console.log('C done');
+      $('#EditForm').eventStack('pause');
+      console.log($('#EditForm').data('eventStack').status);
+      $('#EditForm').eventStack('resume');
+      console.log($('#EditForm').data('eventStack').status);
     }
   });
   $('#EditForm').eventStack('add', {
@@ -53,8 +66,8 @@ $(function() {
           $('#EditForm').eventStack('pause');
           console.log($('#EditForm').data('eventStack').status);
           $('#EditForm').eventStack('resume');
-          eventStack.eventStack('complete', event);
           console.log($('#EditForm').data('eventStack').status);
+          eventStack.eventStack('complete', event);
         },
         success: function() {
           console.log('D done - async');
@@ -67,7 +80,7 @@ $(function() {
   $('#EditForm').bind('afterTriggerAll.eventStack', function() {
     console.info('all done!');
 
-//    $('#EditForm').eventStack('destroy');
+    $('#EditForm').eventStack('destroy');
   });
 
   $('#EditForm').eventStack('fireAll');
