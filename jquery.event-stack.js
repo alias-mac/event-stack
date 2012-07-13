@@ -215,8 +215,6 @@
     }
 
     _fireNext($self);
-
-    
   }
 
 })(jQuery);
