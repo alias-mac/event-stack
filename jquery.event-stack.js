@@ -55,7 +55,7 @@
 
       var pos = $.inArray(event, events);
       if (pos === -1) {
-        throw 'EventStack: event given not found on stack.';
+        throw 'EventStack: Event given not found on stack.';
       }
 
       events.splice(pos, 1);
